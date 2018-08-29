@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from django.contrib.auth import get_user_model
-from accounts.models import GuestEmail
+from accounts.models import GuestEmail, Profile
 from accounts.forms import UserAdminCreationForm, UserAdminChangeForm
 
 User = get_user_model()
@@ -56,3 +56,6 @@ class GuessEmailAdmin(admin.ModelAdmin):
 
 
 admin.site.register(GuestEmail, GuessEmailAdmin)
+
+
+admin.site.register(Profile)
