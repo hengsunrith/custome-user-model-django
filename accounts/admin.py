@@ -59,3 +59,6 @@ admin.site.register(GuestEmail, GuessEmailAdmin)
 
 
 admin.site.register(Profile)
+
+
+admin.site.site_header = 'BACKEND'

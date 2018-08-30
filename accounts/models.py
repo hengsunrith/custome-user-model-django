@@ -94,10 +94,6 @@ class User(AbstractBaseUser):
         return self.active
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User)
-
-
 class GuestEmail(models.Model):
     email = models.EmailField()
     active = models.BooleanField(default=True)
@@ -107,7 +103,7 @@ class GuestEmail(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # email_confirmed = models.BooleanField(default=False)
+    email_confirmed = models.BooleanField(default=False)
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
