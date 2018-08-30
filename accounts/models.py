@@ -9,6 +9,12 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
+GENDER_CHOICES = (
+    ('Male', 'Male'),
+    ('Female', 'Female')
+)
+
+
 class UserManager(BaseUserManager):
 
     def create_user(self, email, full_name=None, password=None, is_active=True, is_staff=False, is_admin=False):
@@ -56,6 +62,9 @@ class User(AbstractBaseUser):
     active = models.BooleanField(default=True) # can login
     staff = models.BooleanField(default=False) # staff user non superuser
     admin = models.BooleanField(default=False) # superuser
+    dob = models.DateField(null=True)
+    phone = models.CharField(max_length=20, null=True)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=6)
     timestamp = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email' # username
