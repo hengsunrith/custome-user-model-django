@@ -8,12 +8,10 @@ from django.contrib.auth.models import (
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
 GENDER_CHOICES = (
     ('Male', 'Male'),
     ('Female', 'Female')
 )
-
 
 class UserManager(BaseUserManager):
 
@@ -25,7 +23,7 @@ class UserManager(BaseUserManager):
         if not full_name:
             raise ValueError("U must have a full name")
         user_obj = self.model(
-            email=self.normalize_email(email),
+            email = self.normalize_email(email),
             full_name=full_name
         )
         user_obj.set_password(password) # change user password

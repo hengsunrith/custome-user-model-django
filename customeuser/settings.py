@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
+    'Posts.apps.PostsConfig'
 )
 
 AUTH_USER_MODEL = 'accounts.User' # change built-in user model to our model
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'customeuser.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # custome customeuser/templates/base_layout
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -109,3 +110,12 @@ STATIC_URL = '/static/'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = 'home'
+
+# custome static file javascript, css, html..
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# media directory.
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -7,6 +7,8 @@ from django.shortcuts import render, redirect
 from accounts.forms import LoginForm, RegisterForm
 from django.contrib.auth import authenticate, login, logout
 from accounts.models import User
+from Posts.models import Post
+from django.utils import timezone
 
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
@@ -14,16 +16,10 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from accounts.tokens import account_activation_token
 
-
 @login_required
 def home(request):
-    return render(request, "accounts/home.html", {})
-
-
-# def dispatch(self, *args, **kwargs):
-#     if self.request.user.is_authenticated:
-#         return redirect('/')
-#     return super.dispatch(*args, **kwargs)
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    return render(request, "Posts/post_list.html", {'posts':posts})
 
 
 def login_page(request):
@@ -38,7 +34,7 @@ def login_page(request):
                 user = authenticate(request, email=email, password=password)
                 if user is not None:
                     login(request, user)
-                    return render(request, "accounts/home.html", {})
+                    return redirect('/')
         else:
             form = LoginForm()
     return render(request, "accounts/login_page.html", {'form': form})
@@ -67,24 +63,27 @@ def register(request):
     # return render(request, "accounts/register.html", {'form': form})
 
     #  REGISTER USER WITH ACTIVATE SENDING MAIL LOCAL
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.active = False
-            user.save()
-            current_site = get_current_site(request)
-            subject = 'Activate Your Account'
-            message = render_to_string('accounts/account_activation_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
-            send_mail(subject, message, 'from@example.com', [user.email], fail_silently=False,)
-            return redirect('account_activation_sent')
+    if request.user.is_authenticated:
+        return redirect('/')
     else:
-        form = RegisterForm()
+        if request.method == 'POST':
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.active = False
+                user.save()
+                current_site = get_current_site(request)
+                subject = 'Activate Your Account'
+                message = render_to_string('accounts/account_activation_email.html', {
+                    'user': user,
+                    'domain': current_site.domain,
+                    'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token': account_activation_token.make_token(user),
+                })
+                send_mail(subject, message, 'from@example.com', [user.email], fail_silently=False,)
+                return redirect('account_activation_sent')
+        else:
+            form = RegisterForm()
     return render(request, 'accounts/register.html', {'form': form})
 
 
@@ -112,4 +111,3 @@ def activate(request, uidb64, token):
 def logout_page(request):
     logout(request)
     return redirect('/')
-
