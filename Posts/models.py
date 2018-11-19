@@ -74,7 +74,7 @@ class Post(models.Model):
     fh = storage.open(self.image.name)
     from_file = tinify.from_file(fh)
 
-    resized = from_file.resize(
+    resized_thumb = from_file.resize(
       method="thumb",
       width=300,
       height=300
@@ -84,13 +84,13 @@ class Post(models.Model):
     extentions = str(os.path.splitext(str(fh))[1])
 
     if self.auto_delete == True:
-      resized.to_file(image_path+"_optimized_"+extentions)
+      resized_thumb.to_file(image_path+"_optimized_"+extentions)
       os.rename(str(self.image.file.name), image_path+"_origin_"+extentions) #rename original photo
-      os.rename(image_path+"_optimized_"+extentions, str(self.image.file.name)) #rename optimized to original str(self.photo.file.name).
+      os.rename(image_path+"_optimized_"+extentions, str(self.image.file.name)) #rename optimized to original str(self.image.file.name).
       os.remove(image_path+"_origin_"+extentions) #removing original photo
 
     else:
-      resized.to_file(image_path+"_optimized_"+extentions)
+      resized_thumb.to_file(image_path+"_optimized_"+extentions)
       fh.close()
 
     return True
