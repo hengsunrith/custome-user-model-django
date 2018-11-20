@@ -11,7 +11,7 @@ import tinify
 import uuid
 import os
 
-tinify.key = "Kr8q2vrHmr2W8zPzhpgKbqHGSzvHQtlh"
+tinify.key = "K8pTq8xf1BrFC33dqbV6wNbzHkqktWcr"
 
 def get_file_name(instance, filename):
     ext = filename.split('.')[-1]
@@ -95,12 +95,13 @@ class Post(models.Model):
 
     return True
 
-  def save(self, *args, **kwargs):
-        super(Post, self).save(*args, **kwargs)
-        if not self.get_thumbnail():
-            raise Exception('Could not create optimation!')
+  # def save(self, *args, **kwargs):
+  #       super(Post, self).save(*args, **kwargs)
+  #       if not self.get_thumbnail():
+  #           raise Exception('Could not create optimation!')
 
-  # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+  def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # compress image size
-        # self.image = create_thumbnail(self.image)
-        # super(Post, self).save(force_update=force_update)
+        super(Post, self).save(force_update=force_update)
+        if not self.get_thumbnail():
+          raise Exception('Could not create optimation!')

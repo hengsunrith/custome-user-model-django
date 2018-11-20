@@ -19,11 +19,13 @@ from accounts import views
 from django.conf import settings
 from django.conf.urls.static import static
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.home, name="home"),
     url(r'^accounts/', include('accounts.urls')),
     url(r'^news/', include('Posts.urls')),
+    url(r'^api/', include('api.urls')),
 ]
 
 if settings.DEBUG:

@@ -38,7 +38,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts.apps.AccountsConfig',
-    'Posts.apps.PostsConfig'
+    'Posts.apps.PostsConfig',
+    'api.apps.ApiConfig',
+
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
 )
 
 AUTH_USER_MODEL = 'accounts.User' # change built-in user model to our model
@@ -76,6 +81,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'customeuser.wsgi.application'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny'
+    ]
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
