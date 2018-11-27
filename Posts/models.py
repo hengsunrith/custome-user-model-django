@@ -25,33 +25,6 @@ def validate_file_extension(value):
     if not ext.lower() in valid_extensions:
         raise ValidationError(u'jpg, png and jpeg are allowed.')
 
-
-# def create_thumbnail(input_image, thumbnail_size=(328, 328)):
-#     # make sure an image has been set
-#     if not input_image or input_image == "":
-#         return
-
-#     # open image
-#     image = Image.open(input_image)
-
-#     # use PILs thumbnail method; use anti aliasing to make the scaled picture look good
-#     image.thumbnail(thumbnail_size, Image.ANTIALIAS)
-
-#     # parse the filename and scramble it
-#     filename = get_file_name(None, os.path.basename(input_image.name))
-#     arrdata = filename.split(".")
-#     # extension is in the last element, pop it
-#     extension = arrdata.pop()
-#     basename = "".join(arrdata)
-#     # add _thumb to the filename
-#     new_filename = basename + "_thumb." + extension
-
-#     # save the image in MEDIA_ROOT and return the filename
-#     image.save(os.path.join(settings.MEDIA_ROOT, new_filename))
-
-#     return new_filename
-
-
 class Post(models.Model):
   author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
   title = models.CharField(max_length=200)

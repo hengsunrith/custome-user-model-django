@@ -15,12 +15,12 @@ GENDER_CHOICES = (
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, full_name=None, password=None, is_active=True, is_staff=False, is_admin=False):
+    def create_user(self, email, username=None, password=None, is_active=True, is_staff=False, is_admin=False):
         if not email:
             raise ValueError("U must have a email address")
         if not password:
             raise ValueError("U must have a password")
-        if not full_name:
+        if not username:
             raise ValueError("U must have a full name")
         user_obj = self.model(
             email = self.normalize_email(email),
@@ -33,19 +33,19 @@ class UserManager(BaseUserManager):
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, full_name=None, password=None):
+    def create_staffuser(self, email, username=None, password=None):
         user = self.create_user(
             email,
-            full_name=full_name,
+            full_name=username,
             password=password,
             is_staff=True
         )
         return user
 
-    def create_superuser(self, email, full_name=None, password=None):
+    def create_superuser(self, email, username=None, password=None):
         user = self.create_user(
             email,
-            full_name=full_name,
+            full_name=username,
             password=password,
             is_staff=True,
             is_admin=True
@@ -56,7 +56,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser):
 
     email = models.EmailField(max_length=255, unique=True)
-    full_name = models.CharField(max_length=255, blank=True, null=True)
+    username = models.CharField(max_length=255, blank=True, null=True)
     active = models.BooleanField(default=True) # can login
     staff = models.BooleanField(default=False) # staff user non superuser
     admin = models.BooleanField(default=False) # superuser
@@ -67,16 +67,16 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'email' # username
     # username and password is required by default
-    REQUIRED_FIELDS = ['full_name'] # ['full_name'] # python manage.py createsuperuser
+    REQUIRED_FIELDS = ['username'] # ['full_name'] # python manage.py createsuperuser
 
     objects = UserManager()
 
     def __str__(self):
         return self.email
 
-    def get_full_name(self):
-        if self.full_name:
-            return self.full_name
+    def get_user_name(self):
+        if self.username:
+            return self.username
         return self.email
 
     def get_short_name(self):
