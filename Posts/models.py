@@ -17,7 +17,6 @@ def get_file_name(instance, filename):
     filename = "%s.%s" % (uuid.uuid4(), ext)
     return os.path.join('images', filename)
 
-
 def validate_file_extension(value):
     ext = os.path.splitext(value.name)[1]  # [0] returns path+filename
     valid_extensions = ['.jpg', '.png','.jpeg']
@@ -33,7 +32,6 @@ class Post(models.Model):
   
   created_date = models.DateTimeField(default=timezone.now())
   published_date = models.DateTimeField(blank=True, null=True)
-
 
   def publish(self):
     self.published_date = timezone.now()
