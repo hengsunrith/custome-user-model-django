@@ -5,7 +5,6 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from PIL import Image
 from django.core.files.storage import default_storage as storage
 import tinify
 import uuid
@@ -68,13 +67,13 @@ class Post(models.Model):
 
     return True
 
-  # def save(self, *args, **kwargs):
-  #       super(Post, self).save(*args, **kwargs)
-  #       if not self.get_thumbnail():
-  #           raise Exception('Could not create optimation!')
-
   def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # compress image size
         super(Post, self).save(force_update=force_update)
         if not self.get_thumbnail():
           raise Exception('Could not create optimation!')
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
