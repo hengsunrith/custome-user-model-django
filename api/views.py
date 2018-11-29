@@ -5,21 +5,20 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from Posts.models import Post, Book
-from .serializers import PostSerializer, UpdateSerializer, BookSerializer
-
+from .serializers import (PostSerializer, UpdateSerializer, BookSerializer)
 from rest_framework import status
 from django.http import Http404
 
-
-# Create your views here.
 class ListPost(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSerializer
 
     def get(self, request, format=None):
-        queryset = Post.objects.all()
+        limit =10
+        offset = limit * (int(request.data.get('page'))-1)
+        print offset
+        queryset = Post.objects.all()[offset:offset+limit]
         serializer = PostSerializer(queryset, many=True)
-
         return Response({"data": serializer.data})
 
     def post(self, request, format=None):

@@ -15,10 +15,21 @@ from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from accounts.tokens import account_activation_token
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 @login_required
 def home(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    posts_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(posts_list, 3)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    
     return render(request, "Posts/post_list.html", {'posts':posts})
 
 
