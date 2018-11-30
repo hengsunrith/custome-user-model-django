@@ -9,17 +9,24 @@ from .serializers import (PostSerializer, UpdateSerializer, BookSerializer)
 from rest_framework import status
 from django.http import Http404
 
+
 class ListPost(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = PostSerializer
 
-    def get(self, request, format=None):
-        limit =10
-        offset = limit * (int(request.data.get('page'))-1)
-        print offset
+    # pagination limit data & offset (localhost:)
+    def get(self, request, page, format=None):
+        limit = 3
+        offset = limit * (int(page)-1)
         queryset = Post.objects.all()[offset:offset+limit]
         serializer = PostSerializer(queryset, many=True)
+
         return Response({"data": serializer.data})
+
+
+class CreatePostAPI(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PostSerializer
 
     def post(self, request, format=None):
         serializer = PostSerializer(data=request.data)

@@ -10,7 +10,7 @@ import tinify
 import uuid
 import os
 
-tinify.key = "K8pTq8xf1BrFC33dqbV6wNbzHkqktWcr"
+tinify.key = "0rfkj4yF7YpmcZnh5Y4dlDm2QJy1pZZF"
 
 def get_file_name(instance, filename):
     ext = filename.split('.')[-1]
