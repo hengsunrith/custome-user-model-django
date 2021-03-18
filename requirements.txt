@@ -67,7 +67,7 @@ oauth2client==3.0.0
 oauthlib==2.1.0
 olefile==0.45.1
 pika==0.12.0
-Pillow==5.2.0
+Pillow==8.1.1
 pluggy==0.7.1
 ply==3.8
 protobuf==3.6.1
