@@ -97,6 +97,6 @@ sqlparse==0.2.4
 tox==3.2.1
 Unidecode==1.0.22
 uritemplate==3.0.0
-urllib3==1.23
+urllib3==1.26.5
 virtualenv==16.0.0
 wcwidth==0.1.7
