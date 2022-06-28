@@ -1,5 +1,5 @@
 amqp-dispatcher==0.10.0
-arrow==0.12.1
+arrow==0.15.1
 backports.functools-lru-cache==1.5
 blessed==1.15.0
 cachetools==2.1.0
